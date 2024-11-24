@@ -55,7 +55,7 @@ Threshr is available to jvm projects via [maven central].
 <dependency>
   <groupId>com.graqr</groupId>
   <artifactId>threshr</artifactId>
-  <version>0</version>
+  <version>0.0.15-SNAPSHOT</version>
 </dependency>
 ```
 
