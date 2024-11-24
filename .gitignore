@@ -1,5 +1,6 @@
 /.idea/
 /target/
+/.vscode/
 .env
 /.run/ThreshrClientTest.run.xml
 .iml
