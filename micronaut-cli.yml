@@ -1,6 +1,6 @@
-applicationType: cli
-defaultPackage: com.github.graqr.threshr
-testFramework: junit
-sourceLanguage: java
-buildTool: maven
-features: [annotation-api, app-name, github-workflow-ci, graalvm, http-client, jackson-databind, java, junit, log4j2, lombok, maven, picocli, picocli-java-application, picocli-junit, properties, readme, shade]
+applicationType: default
+defaultPackage: com.graqr
+testFramework: spock
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [app-name, gradle, http-client, jdbc-hikari, kotlin, kotlin-application, ksp, log4j2, micronaut-aot, micronaut-build, micronaut-http-validation, netty-server, postgres, readme, serialization-jackson, shade, spock, static-resources, test-resources, yaml, yaml-build]
