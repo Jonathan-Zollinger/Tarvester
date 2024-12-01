@@ -42,15 +42,9 @@ class ImagesSpec extends Specification {
         faker = new Faker()
         expectedImages = sql.rows(sqlStatement)
                 .stream()
-                .map(it -> mapper
-                        .readValue((it."response_body" as String), PdpClientRoot)
-                        .data()
-                        .product()
-                        .item()
-                        .enrichment()
-                        .images())
-                .toList()
-                .first()
+                .map(it -> mapper.readValue((it."response_body" as String), PdpClientRoot)
+                        .data.product.item.enrichment.images)
+                .toList().first()
     }
 
     void "Equals appropriately compares self and identical object"() {
@@ -61,13 +55,9 @@ class ImagesSpec extends Specification {
         noExceptionThrown()
 
         where:
-        images << sql.rows(sqlStatement).stream().map(it ->
-                mapper.readValue((it."response_body" as String), PdpClientRoot)
-                        .data()
-                        .product()
-                        .item()
-                        .enrichment()
-                        .images()).toList()
+        images << sql.rows(sqlStatement).stream().map(it -> mapper.readValue(
+                (it."response_body" as String), PdpClientRoot)
+                .data.product.item.enrichment.images).toList()
     }
 
     void "images object to similar object with changed #alteredProperty"() {
@@ -78,30 +68,29 @@ class ImagesSpec extends Specification {
         noExceptionThrown()
 
         where:
-        alteredImages                                                                                | alteredProperty
+        alteredImages                                                                                         | alteredProperty
+        new Images(expectedImages.primaryImageUrl as URL,
+                Collections.nCopies(4, URL.newInstance(faker.internet().url())).toArray(URL[]::new) as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                expectedImages.alternateImages as List<String>,
+                expectedImages.contentLabels as List<ContentLabel>)                                           | "alternateImageUrls"
         new Images(
-                expectedImages.primaryImageUrl(),
-                Collections.nCopies(4, URL.newInstance(faker.internet().url())).toArray(URL[]::new),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                expectedImages.alternateImages(),
-                expectedImages.contentLabels())                                                      | "alternateImageUrls"
+                expectedImages.primaryImageUrl as URL,
+                expectedImages.alternateImageUrls as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                List.of(expectedImages.alternateImages.first()) as List<String>,
+                expectedImages.contentLabels as List<ContentLabel>)                                           | "alternateImages"
         new Images(
-                expectedImages.primaryImageUrl(),
-                expectedImages.alternateImageUrls(),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                List.of(expectedImages.alternateImages().first()),
-                expectedImages.contentLabels())                                                      | "alternateImages"
-        new Images(
-                expectedImages.primaryImageUrl(),
-                expectedImages.alternateImageUrls(),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                expectedImages.alternateImages(),
+                expectedImages.primaryImageUrl as URL,
+                expectedImages.alternateImageUrls as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                expectedImages.alternateImages as List<String>,
                 Stream.concat(Stream.of(new ContentLabel(faker.internet().url())),
-                        expectedImages.contentLabels().stream()).toList())                           | "contentLabels"
-        "I'm not an images object"                                                                   | "class"
+                        expectedImages.contentLabels.stream()).toList() as List<ContentLabel>)                | "contentLabels"
+        "I'm not an images object"                                                                            | "class"
     }
 
     void "Hashcode matches between identical object"() {
@@ -112,13 +101,9 @@ class ImagesSpec extends Specification {
         noExceptionThrown()
 
         where:
-        images << sql.rows(sqlStatement).stream().map(it ->
-                mapper.readValue((it."response_body" as String), PdpClientRoot)
-                        .data()
-                        .product()
-                        .item()
-                        .enrichment()
-                        .images()).toList()
+        images << sql.rows(sqlStatement)
+                .stream().map(it -> mapper.readValue((it."response_body" as String), PdpClientRoot)
+                .data.product.item.enrichment.images).toList()
     }
 
     void "images object hashes do not match with the property #alteredProperty altered"() {
@@ -129,30 +114,28 @@ class ImagesSpec extends Specification {
         noExceptionThrown()
 
         where:
-        alteredImages                                                                                | alteredProperty
+        alteredImages                                                                                         | alteredProperty
+        new Images(expectedImages.primaryImageUrl as URL,
+                Collections.nCopies(4, URL.newInstance(faker.internet().url())).toArray(URL[]::new) as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                expectedImages.alternateImages as List<String>,
+                expectedImages.contentLabels as List<ContentLabel>)                                           | "alternateImageUrls"
         new Images(
-                expectedImages.primaryImageUrl(),
-                Collections.nCopies(4, URL.newInstance(faker.internet().url())).toArray(URL[]::new),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                expectedImages.alternateImages(),
-                expectedImages.contentLabels())                                                      | "alternateImageUrls"
+                expectedImages.primaryImageUrl as URL,
+                expectedImages.alternateImageUrls as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                List.of(expectedImages.alternateImages.first()) as List<String>,
+                expectedImages.contentLabels as List<ContentLabel>)                                           | "alternateImages"
         new Images(
-                expectedImages.primaryImageUrl(),
-                expectedImages.alternateImageUrls(),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                List.of(expectedImages.alternateImages().first()),
-                expectedImages.contentLabels())                                                      | "alternateImages"
-        new Images(
-                expectedImages.primaryImageUrl(),
-                expectedImages.alternateImageUrls(),
-                expectedImages.baseUrl(),
-                expectedImages.primaryImage(),
-                expectedImages.alternateImages(),
+                expectedImages.primaryImageUrl as URL,
+                expectedImages.alternateImageUrls as URL[],
+                expectedImages.baseUrl as String,
+                expectedImages.primaryImage as String,
+                expectedImages.alternateImages as List<String>,
                 Stream.concat(Stream.of(new ContentLabel(faker.internet().url())),
-                        expectedImages.contentLabels().stream()).toList())                           | "contentLabels"
-        "I'm not an images object"                                                                   | "class"
+                        expectedImages.contentLabels.stream()).toList() as List<ContentLabel>)                | "contentLabels"
+        "I'm not an images object"                                                                            | "class"
     }
-
 }
