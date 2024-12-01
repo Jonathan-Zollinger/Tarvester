@@ -1,8 +1,8 @@
-package com.graqr.threshr.model.redsky.product.summary;
+package com.graqr.threshr.model.redsky.product.summary
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.graqr.threshr.model.redsky.product.ProductSummaryWithFulfillment;
-import io.micronaut.serde.annotation.Serdeable;
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.graqr.threshr.model.redsky.product.ProductSummaryWithFulfillment
+import io.micronaut.serde.annotation.Serdeable
 
 @Serdeable
 data class Data(

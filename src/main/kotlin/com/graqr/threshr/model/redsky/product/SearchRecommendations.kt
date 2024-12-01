@@ -1,4 +1,4 @@
-package com.graqr.threshr.model.redsky.product;
+package com.graqr.threshr.model.redsky.product
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.micronaut.serde.annotation.Serdeable
@@ -15,7 +15,7 @@ data class SearchRecommendations(
         return String.format(
             "SearchRecommendations[categoryId=%s, relatedCategories=%s]",
             categoryId, relatedCategories
-        );
+        )
     }
 
 }
