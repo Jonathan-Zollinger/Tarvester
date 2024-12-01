@@ -1,6 +1,6 @@
 package com.graqr.threshr.model.queryparam
 
-import com.graqr.model.queryparam.Place
+import com.graqr.threshr.model.queryparam.Place
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import net.datafaker.Faker
 import spock.lang.Shared
