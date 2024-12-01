@@ -1,7 +1,7 @@
 package com.graqr.threshr.model.redsky.product
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.graqr.threshr.model.queryparam.Tci
+import com.graqr.threshr.model.queryparam.Tcin
 import io.micronaut.core.annotation.Nullable
 import io.micronaut.serde.annotation.Serdeable
 
