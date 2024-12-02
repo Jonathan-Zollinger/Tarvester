@@ -14,7 +14,7 @@ group = "com.graqr"
 val kotlinVersion = project.properties["kotlinVersion"]
 val dataFakerVersion = "2.4.2"
 val log4jBomVersion = "2.24.1"
-val groovySqlVersion = "2.5.3"
+val groovySqlVersion = "4.0.24"
 repositories {
     mavenCentral()
 }
@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     testImplementation("net.datafaker:datafaker:${dataFakerVersion}")
-//    testImplementation("org.codehaus.groovy:groovy-sql:${groovySqlVersion}")
+    testImplementation("org.apache.groovy:groovy-sql:${groovySqlVersion}")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.apache.logging.log4j:log4j-core")
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl")

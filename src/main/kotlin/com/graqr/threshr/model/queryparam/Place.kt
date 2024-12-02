@@ -5,11 +5,11 @@ package com.graqr.threshr.model.queryparam
  * accepts a location in the form of a zipcode or a city, state combo. The Nearby Stores endpoint will return a
  * list of stores near the given location.
  *
- * @param location a string representing the zipcode
+ * @param zipOrCity either a zipcode or a city and state provided as two separate strings
  * @author Jonathan Zollinger
  * @since 0.1.0
  */
-class Place(val location: String) {
+class Place(val zipOrCity: String) {
     /*
      * Initializes a Place object using a zipcode.
      *
@@ -18,7 +18,7 @@ class Place(val location: String) {
      * separated by a hyphen or space.
      */
     init {
-        require(location matches Regex("^\\d{5}[-|\\s]?(\\d{4})?$")) {
+        require(zipOrCity matches Regex("^\\d{5}[-|\\s]?(\\d{4})?$")) {
             "Invalid zipcode provided. Zipcode must be a 5-digit number optionally followed by a 4-digit extension."
         }
     }

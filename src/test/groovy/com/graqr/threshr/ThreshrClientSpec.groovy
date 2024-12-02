@@ -22,7 +22,7 @@ class ThreshrClientSpec extends ThreshrSpec {
 
         then:
         noExceptionThrown()
-        response.body().data().productSummaryWithFulfillmentList().size() == tcin.tcins.split(",").size()
+        response.body().data.productSummaryWithFulfillmentList.size() == tcin.tcins.split(",").size()
     }
 
     void "no error calling pdp client search"() {
@@ -34,26 +34,26 @@ class ThreshrClientSpec extends ThreshrSpec {
 
         then:
         noExceptionThrown()
-        null != response.body().data().product()
+        null != response.body().data.product
     }
 
     void 'querying "#place.getZipOrCityState()" returns the "#expectedLocationName" store'() {
         when:
-        HttpResponse<NearbyStoreRoot> response = threshrClient.getNearbyStores(5,100, place.getZipOrCityState())
+        HttpResponse<NearbyStoreRoot> response = threshrClient.getNearbyStores(5,100, place.zipOrCity)
 
         then:
-        response.body().data().nearbyStores().stores()
+        response.body().data.nearbyStores.stores
                 .stream()
-                .map(it -> it.locationName())
+                .map(it -> it.locationName)
                 .collect(Collectors.toList())
                 .contains(expectedLocationName)
 
         where:
         store << expectedStores
-        expectedLocationName = store.locationName()
+        expectedLocationName = store.locationName
         place = 0 == new Random().nextInt(2)
-                ? new Place(store.mailingAddress().postalCode())
-                : new Place(store.mailingAddress().city(), store.mailingAddress().state())
+                ? new Place(store.mailingAddress.postalCode)
+                : new Place(store.mailingAddress.city, store.mailingAddress.state)
     }
 
     void "test querying store #expectedStore.storeId() throws no error"() { // see related test in controller spec

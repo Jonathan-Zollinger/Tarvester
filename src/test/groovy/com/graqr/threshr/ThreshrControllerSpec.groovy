@@ -58,10 +58,10 @@ class ThreshrControllerSpec extends ThreshrSpec {
         noExceptionThrown()
 
         and: "Product array is not null"
-        null != search.products()
+        null != search.products
 
         and: "Each product object contains non-null price object."
-        search.products().collect { null != it.price() }
+        search.products.collect { null != it.price }
 
         where:
         [id, category_name] << sql.rows('select id, category_name from test_target_categories TABLESAMPLE BERNOULLI(10) LIMIT 5')
@@ -76,13 +76,13 @@ class ThreshrControllerSpec extends ThreshrSpec {
 
         and: "List size matches pagination expected size."
         if (null != searches && searches.size() > 0 )
-            if (searches[0].searchResponse().metadata().totalPages() == 0) {
-                searches[0].searchResponse().metadata().totalPages() == 1
+            if (searches[0].searchResponse.metadata.totalPages == 0) {
+                searches[0].searchResponse.metadata.totalPages == 1
             }else {
-                searches[0].searchResponse().metadata().totalPages() == searches.size()
+                searches[0].searchResponse.metadata.totalPages == searches.size()
             }
         and: "Each product object contains non-null price object."
-        searches.forEach {it.products().collect { null != it.price() }}
+        searches.forEach {it.products.collect { null != it.price }}
 
         where:
         [id, category_name] << sql.rows('select id, category_name from test_target_categories TABLESAMPLE BERNOULLI(10) LIMIT 1')
@@ -98,7 +98,7 @@ class ThreshrControllerSpec extends ThreshrSpec {
         where:
         tcinArg                                 | _
         tcin                                    | _
-        new Tcin(tcin.getTcins().split(",")[0]) | _
+        new Tcin(tcin .split(",")[0]) | _
     }
 
     void "query product details with no error"() {

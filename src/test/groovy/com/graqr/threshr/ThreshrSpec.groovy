@@ -2,8 +2,10 @@ package com.graqr.threshr
 
 import com.graqr.threshr.model.queryparam.TargetStore
 import com.graqr.threshr.model.queryparam.Tcin
+import com.graqr.threshr.model.redsky.product.RelatedCategory
 import com.graqr.threshr.model.redsky.store.Store
 import com.graqr.threshr.model.redsky.store.nearby.NearbyStoreRoot
+import groovy.sql.Sql
 import io.micronaut.context.annotation.Value
 import io.micronaut.core.io.ResourceLoader
 import io.micronaut.serde.ObjectMapper
@@ -12,10 +14,11 @@ import jakarta.inject.Inject
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.util.stream.Stream
+
 @MicronautTest
 class ThreshrSpec extends Specification {
 
-    //  ----------- Resources / Fields -----------
     @Inject
     @Shared
     Threshr threshrController
@@ -28,6 +31,13 @@ class ThreshrSpec extends Specification {
     @Shared
     ObjectMapper mapper
 
+    @Shared
+    Sql sql
+
+    @Shared
+    @Value('${test.datasources.default.url}')
+    String url
+
     @Inject
     @Shared
     ResourceLoader resourceLoader
@@ -37,7 +47,13 @@ class ThreshrSpec extends Specification {
     String storesFilePath
 
     @Shared
-    List<Store> expectedStores
+    RelatedCategory[] testCategories
+
+    @Shared
+    Store[] expectedStores
+
+    @Shared
+    Tcin[] testTcins
 
     byte[] getResourceFromFile(String filepath) {
         try {
@@ -49,10 +65,15 @@ class ThreshrSpec extends Specification {
 
 
     void setupSpec() {
-        expectedStores = mapper.readValue(getResourceFromFile("classpath:" + storesFilePath), NearbyStoreRoot.class)
-                .data()
-                .nearbyStores()
-                .stores()
+        url = null != url ? url : System.getenv("TEST_DATASOURCES_DEFAULT_URL")
+        sql = Sql.newInstance(url)
+        testCategories = sql.rows('select id, category_name from test_target_categories')
+                .stream().map(it -> new RelatedCategory(it.get('id') as String, it.get('category_name') as String))
+        testTcins = sql.rows('select tcin from test_target_categories')
+                .stream().map(it -> new Tcin(List.of(it.get('tcin') as String)))
+//        expectedStores = sql.rows('select * from target_stores').stream().map(it -> mapper.readValue(it, Store)).toArray(Store[]::new)
+
+
     }
 
     @Shared
@@ -65,7 +86,5 @@ class ThreshrSpec extends Specification {
             -111.887)
 
     @Shared
-    Tcin tcin = new Tcin(
-            new String[]{"82691535", "12953464"} //corn & coke https://bit.ly/45V8dui https://bit.ly/40j4A0e
-    )
+    Tcin tcin =
 }
